@@ -1,0 +1,66 @@
+// Logging code for the sewage flow rate measurement device
+
+void count_ISR();
+void terminal_output();
+
+int count = 0;
+unsigned long upperTimer = 0;
+unsigned long timer = 0;
+const unsigned int conversion_factor = 50; 
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(13,OUTPUT); // Cleaning LED
+  pinMode(12,OUTPUT); // Use pin 12 as the lower LED
+  pinMode(11,OUTPUT); // Use pin 11 as the upper LED 
+  attachInterrupt(digitalPinToInterrupt(2), upperCountISR, RISING); 
+  attachInterrupt(digitalPinToInterrupt(3), lowerCountISR, RISING);
+}
+
+void upperCountISR()
+{
+  if((millis() - timer) > 1000)
+  {
+    count++;
+    digitalWrite(11, HIGH);   
+    delay(1000);              
+    digitalWrite(11, LOW);    
+    timer = millis();
+    upperTimer = timer;  
+  }
+}
+void lowerCountISR()
+{
+  if((millis() - timer) > 1000)
+  {
+    digitalWrite(12, HIGH);   
+    delay(1000);              
+    digitalWrite(12, LOW);    
+    timer = millis();
+  }
+  if((millis()-upperTimer) < 10000)
+  {
+    Serial.print("CLEANING");
+    digitalWrite(13,HIGH);
+  }
+}
+
+void printf(long timer, int count, int volume)
+{
+  Serial.print(timer);
+  Serial.print("\t");
+  Serial.print(count);
+  Serial.print("\t"); 
+  Serial.print(volume);
+  Serial.print("\n");  
+ }
+
+void loop() {
+  delay(2000);
+  terminal_output();
+}
+
+void terminal_output(){
+  timer = millis();
+  printf(((timer)/3600000),count,count*conversion_factor); // Dividing by 3600000 will give the time in hours. Too slow for any demo work
+}
