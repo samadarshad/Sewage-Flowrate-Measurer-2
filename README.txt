@@ -1,3 +1,4 @@
+
 Sewage Flow Rate Measurer
 Published on 22.11.2016
 Written on 23.06.2016 by Luke Cockerton, University of Cambridge
@@ -17,6 +18,8 @@ The sewage flowrate measurer works like this:
 4) The bucket empties its contents and the centre of mass returns to the other side of the pivot, causing the bucket to spin back round and return to its upright position.
 5) The bucket depresses the upright position again, and sewage fills the bucket - we continue again from (3).
 6) For maintenance, the time taken between the tipped position and restoring to upright should be within a time (some constant found from experiment). If any longer - this suggests there is accrued sewage/sediment within the bucket and it needs to be cleaned. This lights up an LED (output 13)
+
+Illustration/Schematic: https://docs.google.com/drawings/d/1EGWViyz-ik2as3gvo-SlbQTz5XWKb0dNe0NSWS5Z5Bg
 
 Code description:
 This code was written to suppliment the hardware for the Sewage-flowrate-measurer device.
